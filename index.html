@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mesures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      flex: 0 0 auto;
+      padding: 10px 15px;
+      cursor: pointer;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .form-section {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group input {
+      padding: 8px;
+      margin-right: 10px;
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .toggle {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .chevron {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+
+    @media (max-width: 500px) {
+      .input-group input {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="btn-container">
+    <button class="btn" id="addMeasureBtn">Ajouter une mesure</button>
+    <button class="btn" id="listMeasureBtn">Liste des mesures</button>
+  </div>
+
+  <div id="addMeasureSection" class="form-section hidden">
+    <h3>Nouvelle mesure</h3>
+    <div id="inputContainer"></div>
+    <button class="btn" id="addInputBtn">+</button>
+    <br><br>
+    <input type="text" id="personName" placeholder="Nom de la personne" required>
+    <button class="btn" id="saveBtn">Enregistrer</button>
+  </div>
+
+  <div id="measureListSection" class="form-section hidden">
+    <h3>Liste des mesures</h3>
+    <div id="measureList"></div>
+  </div>
+
+  <script>
+    const addMeasureBtn = document.getElementById('addMeasureBtn');
+    const listMeasureBtn = document.getElementById('listMeasureBtn');
+    const addMeasureSection = document.getElementById('addMeasureSection');
+    const measureListSection = document.getElementById('measureListSection');
+    const addInputBtn = document.getElementById('addInputBtn');
+    const inputContainer = document.getElementById('inputContainer');
+    const saveBtn = document.getElementById('saveBtn');
+    const personName = document.getElementById('personName');
+    const measureList = document.getElementById('measureList');
+
+    let inputCount = 0;
+
+    addMeasureBtn.addEventListener('click', () => {
+      addMeasureSection.classList.remove('hidden');
+      measureListSection.classList.add('hidden');
+    });
+
+    listMeasureBtn.addEventListener('click', () => {
+      addMeasureSection.classList.add('hidden');
+      measureListSection.classList.remove('hidden');
+      displayMeasures();
+    });
+
+    addInputBtn.addEventListener('click', () => {
+      const group = document.createElement('div');
+      group.className = 'input-group';
+      inputCount++;
+
+      group.innerHTML = `
+        <input type="text" placeholder="Nom de la mesure" id="label-${inputCount}">
+        <input type="text" placeholder="Valeur" id="value-${inputCount}">
+      `;
+
+      inputContainer.appendChild(group);
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const name = personName.value.trim();
+      if (!name) {
+        alert("Veuillez entrer un nom.");
+        return;
+      }
+
+      const measures = [];
+      for (let i = 1; i <= inputCount; i++) {
+        const label = document.getElementById(`label-${i}`);
+        const value = document.getElementById(`value-${i}`);
+        if (label && value && label.value && value.value) {
+          measures.push({ label: label.value, value: value.value });
+        }
+      }
+
+      if (measures.length === 0) {
+        alert("Veuillez ajouter au moins une mesure.");
+        return;
+      }
+
+      const stored = JSON.parse(localStorage.getItem('measures') || '[]');
+      stored.push({ name, measures });
+      localStorage.setItem('measures', JSON.stringify(stored));
+
+      inputContainer.innerHTML = '';
+      personName.value = '';
+      inputCount = 0;
+
+      alert("Mesure enregistrée !");
+    });
+
+    function displayMeasures() {
+      measureList.innerHTML = '';
+      const stored = JSON.parse(localStorage.getItem('measures') || '[]');
+
+      stored.forEach((entry, index) => {
+        const container = document.createElement('div');
+
+        const header = document.createElement('div');
+        header.className = 'toggle';
+        header.innerHTML = `<span class="chevron">►</span>${entry.name}`;
+        header.addEventListener('click', () => {
+          const isHidden = details.classList.contains('hidden');
+          details.classList.toggle('hidden');
+          header.querySelector('.chevron').textContent = isHidden ? '▼' : '►';
+        });
+
+        const details = document.createElement('div');
+        details.className = 'hidden';
+        details.style.marginLeft = '20px';
+
+        entry.measures.forEach(measure => {
+          const item = document.createElement('p');
+          item.textContent = `${measure.label}: ${measure.value}`;
+          details.appendChild(item);
+        });
+
+        container.appendChild(header);
+        container.appendChild(details);
+        measureList.appendChild(container);
+      });
+    }
+  </script>
+
+</body>
+</html>
