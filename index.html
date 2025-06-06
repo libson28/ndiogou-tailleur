@@ -2,106 +2,333 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Mesures</title>
+  <title>Mesures de Couture</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      /* padding: 20px; */
+    }
+
+    .container {
+      max-width: 100%;
+      height: 100vh auto;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      font-weight: 300;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 1.1em;
     }
 
     .btn-container {
       display: flex;
       justify-content: center;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 15px;
+      padding: 30px;
+      background: #f8fafc;
     }
 
     .btn {
-      flex: 0 0 auto;
-      padding: 10px 15px;
+      padding: 12px 24px;
       cursor: pointer;
       border: none;
-      background-color: #3498db;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
       color: white;
-      border-radius: 5px;
-      white-space: nowrap;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .btn-danger:hover {
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-edit {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+
+    .btn-edit:hover {
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      min-width: auto;
     }
 
     .form-section {
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      padding: 40px;
+      background: white;
+    }
+
+    .form-section h3 {
+      color: #374151;
+      margin-bottom: 30px;
+      font-size: 1.8em;
+      font-weight: 600;
     }
 
     .input-group {
-      margin-bottom: 10px;
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      align-items: center;
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .input-group:hover {
+      border-color: #4f46e5;
+      transform: translateY(-1px);
     }
 
     .input-group input {
-      padding: 8px;
-      margin-right: 10px;
-      width: 100%;
-      max-width: 300px;
-      margin-bottom: 5px;
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+      transition: all 0.3s ease;
     }
 
-    input[type="text"] {
+    .input-group input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .form-inputs {
+      margin-bottom: 30px;
+    }
+
+    .person-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .person-info input {
       width: 100%;
-      max-width: 300px;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #f9fafb;
+      transition: all 0.3s ease;
+    }
+
+    .person-info input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 
     .hidden {
       display: none;
     }
 
-    .toggle {
+    .measure-item {
+      background: white;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .measure-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .measure-header {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      padding: 20px;
       cursor: pointer;
-      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .measure-header:hover {
+      background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    }
+
+    .measure-title {
+      font-weight: 600;
+      font-size: 1.2em;
+      color: #374151;
+    }
+
+    .measure-model {
+      font-size: 0.9em;
+      color: #6b7280;
+      font-style: italic;
     }
 
     .chevron {
       font-size: 18px;
-      margin-right: 5px;
+      color: #6b7280;
+      transition: transform 0.3s ease;
     }
 
-    @media (max-width: 500px) {
-      .input-group input {
-        width: 100%;
-        margin-right: 0;
+    .chevron.rotated {
+      transform: rotate(90deg);
+    }
+
+    .measure-details {
+      padding: 25px;
+      background: #fafbfc;
+    }
+
+    .measure-details p {
+      margin-bottom: 12px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      border-left: 4px solid #4f46e5;
+      font-size: 1.05em;
+    }
+
+    .measure-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .edit-form {
+      background: #f0f9ff;
+      border: 2px solid #0ea5e9;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 15px;
+    }
+
+    .edit-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+    }
+
+    .edit-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .add-measure-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    @media (max-width: 768px) {
+      .person-info {
+        grid-template-columns: 1fr;
+      }
+      
+      .input-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .measure-actions {
+        flex-direction: column;
       }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <h1>✂️Ndiogou création</h1>
+      <p>Gérez vos mesures avec style et précision</p>
+    </div>
 
-  <div class="btn-container">
-    <button class="btn" id="addMeasureBtn">Ajouter une mesure</button>
-    <button class="btn" id="listMeasureBtn">Liste des mesures</button>
-  </div>
+    <div class="btn-container">
+      <button class="btn" id="addMeasureBtn">Ajouter une mesure</button>
+      <button class="btn" id="listMeasureBtn">Liste des mesures</button>
+    </div>
 
-  <div id="addMeasureSection" class="form-section hidden">
-    <h3>Nouvelle mesure</h3>
-    <div id="inputContainer"></div>
-    <button class="btn" id="addInputBtn">+</button>
-    <br><br>
-    <input type="text" id="personName" placeholder="Nom de la personne" required>
-    <button class="btn" id="saveBtn">Enregistrer</button>
-  </div>
+    <div id="addMeasureSection" class="form-section hidden">
+      <h3>Nouvelle mesure</h3>
+      
+      <div class="person-info">
+        <input type="text" id="personName" placeholder="Nom de la personne" required>
+        <input type="text" id="personModel" placeholder="Modèle (ex: robe, veste, pantalon...)">
+      </div>
 
-  <div id="measureListSection" class="form-section hidden">
-    <h3>Liste des mesures</h3>
-    <div id="measureList"></div>
+      <div class="form-inputs">
+        <div id="inputContainer"></div>
+        <div class="add-measure-container">
+          <button class="btn" id="addInputBtn">+ Ajouter une mesure</button>
+        </div>
+      </div>
+
+      <button class="btn" id="saveBtn">💾 Enregistrer</button>
+    </div>
+
+    <div id="measureListSection" class="form-section hidden">
+      <h3>Liste des mesures</h3>
+      <div id="measureList"></div>
+    </div>
   </div>
 
   <script>
@@ -113,13 +340,16 @@
     const inputContainer = document.getElementById('inputContainer');
     const saveBtn = document.getElementById('saveBtn');
     const personName = document.getElementById('personName');
+    const personModel = document.getElementById('personModel');
     const measureList = document.getElementById('measureList');
 
     let inputCount = 0;
+    let editingIndex = -1;
 
     addMeasureBtn.addEventListener('click', () => {
       addMeasureSection.classList.remove('hidden');
       measureListSection.classList.add('hidden');
+      resetForm();
     });
 
     listMeasureBtn.addEventListener('click', () => {
@@ -129,33 +359,59 @@
     });
 
     addInputBtn.addEventListener('click', () => {
+      addInputField();
+    });
+
+    function addInputField(label = '', value = '') {
       const group = document.createElement('div');
       group.className = 'input-group';
       inputCount++;
 
       group.innerHTML = `
-        <input type="text" placeholder="Nom de la mesure" id="label-${inputCount}">
-        <input type="text" placeholder="Valeur" id="value-${inputCount}">
+        <input type="text" placeholder="Nom de la mesure" id="label-${inputCount}" value="${label}">
+        <input type="text" placeholder="Valeur" id="value-${inputCount}" value="${value}">
+        <button class="btn btn-danger btn-small" onclick="removeInputField(this)" title="Supprimer">🗑️</button>
       `;
 
       inputContainer.appendChild(group);
-    });
+    }
+
+    function removeInputField(button) {
+      button.parentElement.remove();
+    }
+
+    function resetForm() {
+      inputContainer.innerHTML = '';
+      personName.value = '';
+      personModel.value = '';
+      inputCount = 0;
+      editingIndex = -1;
+      document.getElementById('saveBtn').textContent = '💾 Enregistrer';
+    }
 
     saveBtn.addEventListener('click', () => {
       const name = personName.value.trim();
+      const model = personModel.value.trim();
+      
       if (!name) {
         alert("Veuillez entrer un nom.");
         return;
       }
 
       const measures = [];
-      for (let i = 1; i <= inputCount; i++) {
-        const label = document.getElementById(`label-${i}`);
-        const value = document.getElementById(`value-${i}`);
-        if (label && value && label.value && value.value) {
-          measures.push({ label: label.value, value: value.value });
+      const inputGroups = inputContainer.querySelectorAll('.input-group');
+      
+      inputGroups.forEach((group, index) => {
+        const labelInput = group.querySelector('input[type="text"]:first-child');
+        const valueInput = group.querySelector('input[type="text"]:nth-child(2)');
+        
+        if (labelInput && valueInput && labelInput.value && valueInput.value) {
+          measures.push({ 
+            label: labelInput.value.trim(), 
+            value: valueInput.value.trim() 
+          });
         }
-      }
+      });
 
       if (measures.length === 0) {
         alert("Veuillez ajouter au moins une mesure.");
@@ -163,48 +419,127 @@
       }
 
       const stored = JSON.parse(localStorage.getItem('measures') || '[]');
-      stored.push({ name, measures });
+      
+      if (editingIndex >= 0) {
+        // Mode édition
+        stored[editingIndex] = { name, model, measures };
+        alert("Mesure modifiée avec succès !");
+      } else {
+        // Nouveau mode
+        stored.push({ name, model, measures });
+        alert("Mesure enregistrée avec succès !");
+      }
+      
       localStorage.setItem('measures', JSON.stringify(stored));
-
-      inputContainer.innerHTML = '';
-      personName.value = '';
-      inputCount = 0;
-
-      alert("Mesure enregistrée !");
+      resetForm();
     });
 
     function displayMeasures() {
       measureList.innerHTML = '';
       const stored = JSON.parse(localStorage.getItem('measures') || '[]');
 
+      if (stored.length === 0) {
+        measureList.innerHTML = '<p style="text-align: center; color: #6b7280; font-style: italic; padding: 40px;">Aucune mesure enregistrée pour le moment.</p>';
+        return;
+      }
+
       stored.forEach((entry, index) => {
         const container = document.createElement('div');
+        container.className = 'measure-item';
 
         const header = document.createElement('div');
-        header.className = 'toggle';
-        header.innerHTML = `<span class="chevron">►</span>${entry.name}`;
+        header.className = 'measure-header';
+        
+        const titleSection = document.createElement('div');
+        titleSection.innerHTML = `
+          <div class="measure-title">${entry.name}</div>
+          ${entry.model ? `<div class="measure-model">Modèle: ${entry.model}</div>` : ''}
+        `;
+
+        const chevron = document.createElement('span');
+        chevron.className = 'chevron';
+        chevron.textContent = '►';
+        
+        header.appendChild(titleSection);
+        header.appendChild(chevron);
+
         header.addEventListener('click', () => {
           const isHidden = details.classList.contains('hidden');
           details.classList.toggle('hidden');
-          header.querySelector('.chevron').textContent = isHidden ? '▼' : '►';
+          chevron.classList.toggle('rotated');
+          chevron.textContent = isHidden ? '▼' : '►';
         });
 
         const details = document.createElement('div');
-        details.className = 'hidden';
-        details.style.marginLeft = '20px';
+        details.className = 'measure-details hidden';
 
         entry.measures.forEach(measure => {
           const item = document.createElement('p');
-          item.textContent = `${measure.label}: ${measure.value}`;
+          item.innerHTML = `<strong>${measure.label}:</strong> ${measure.value}`;
           details.appendChild(item);
         });
+
+        // Actions
+        const actions = document.createElement('div');
+        actions.className = 'measure-actions';
+        
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-edit';
+        editBtn.innerHTML = '✏️ Modifier';
+        editBtn.onclick = () => editMeasure(index);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger';
+        deleteBtn.innerHTML = '🗑️ Supprimer';
+        deleteBtn.onclick = () => deleteMeasure(index);
+        
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+        details.appendChild(actions);
 
         container.appendChild(header);
         container.appendChild(details);
         measureList.appendChild(container);
       });
     }
-  </script>
 
+    function editMeasure(index) {
+      const stored = JSON.parse(localStorage.getItem('measures') || '[]');
+      const entry = stored[index];
+      
+      // Basculer vers le formulaire
+      addMeasureSection.classList.remove('hidden');
+      measureListSection.classList.add('hidden');
+      
+      // Remplir le formulaire
+      personName.value = entry.name;
+      personModel.value = entry.model || '';
+      
+      // Vider et remplir les mesures
+      inputContainer.innerHTML = '';
+      inputCount = 0;
+      
+      entry.measures.forEach(measure => {
+        addInputField(measure.label, measure.value);
+      });
+      
+      editingIndex = index;
+      document.getElementById('saveBtn').textContent = '✏️ Modifier';
+    }
+
+    function deleteMeasure(index) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer cette mesure ?')) {
+        const stored = JSON.parse(localStorage.getItem('measures') || '[]');
+        stored.splice(index, 1);
+        localStorage.setItem('measures', JSON.stringify(stored));
+        displayMeasures();
+      }
+    }
+
+    // Initialiser avec un champ de mesure par défaut
+    window.addEventListener('load', () => {
+      addInputField();
+    });
+  </script>
 </body>
 </html>
